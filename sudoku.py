@@ -67,59 +67,43 @@ def CalAptitud(individuo): #Suma todos los elementos de la matriz que recibe par
     if(aptitud1-10 != 0):
         if(aptitud1-10 <0):
             aptitud = aptitud + (aptitud1-10)*(-1)
-            #print("suma", (aptitud1-10)*(-1))
         else:
             aptitud = aptitud + aptitud1-10
-            #print("suma", aptitud1-10)
     if(aptitud2-10 != 0):
         if(aptitud2-10 <0):
             aptitud = aptitud + (aptitud2-10)*(-1)
-            #print("suma", (aptitud2-10)*(-1))
         else:
             aptitud = aptitud + aptitud2-10
-            #print("suma", aptitud2-10)
     if(aptitud3-10 != 0):
         if(aptitud3-10 <0):
             aptitud = aptitud + (aptitud3-10)*(-1)
-            #print("suma", (aptitud3-10)*(-1))
         else:
             aptitud = aptitud + aptitud3-10
-            #print("suma", aptitud3-10)
     if(aptitud4-10 != 0):
         if(aptitud4-10 <0):
             aptitud = aptitud + (aptitud4-10)*(-1)
-            #print("suma", (aptitud4-10)*(-1))
         else:
             aptitud = aptitud + aptitud4-10
-            #print("suma", aptitud4-10)
     if(aptitud5-10 != 0):
         if(aptitud5-10 <0):
             aptitud = aptitud + (aptitud5-10)*(-1)
-            #print("suma", (aptitud5-10)*(-1))
         else:
             aptitud = aptitud + aptitud5-10
-            #print("suma", aptitud5-10)
     if(aptitud6-10 != 0):
         if(aptitud6-10 <0):
             aptitud = aptitud + (aptitud6-10)*(-1)
-            #print("suma", (aptitud6-10)*(-1))
         else:
             aptitud = aptitud + aptitud6-10
-            #print("suma", aptitud6-10)
     if(aptitud7-10 != 0):
         if(aptitud7-10 <0):
             aptitud = aptitud + (aptitud7-10)*(-1)
-            #print("suma", (aptitud7-10)*(-1))
         else:
             aptitud = aptitud + aptitud7-10
-            #print("suma", aptitud7-10)
     if(aptitud8-10 != 0):
         if(aptitud8-10 <0):
             aptitud = aptitud + (aptitud8-10)*(-1)
-            #print("suma", (aptitud8-10)*(-1))
         else:
             aptitud = aptitud + aptitud8-10
-            #print("suma", aptitud8-10)
     return aptitud
 
 def mejorInd(aptitud):
@@ -144,38 +128,23 @@ for i in range (0, 100): #Este for crea 100 individuos
     poblacion.append(tablero)
     aptitud.append(CalAptitud(tablero))
 
-#print(poblacion[0])
-#imprimirMatriz(poblacion[0])
-#print(aptitud[0])
-
 sigpoblacion = poblacion
 sigaptitud = aptitud
 
-#print("Len", len(sigpoblacion))
-
-#print(aptitud)
-#print(mejorInd(aptitud))
-#print(aptitud[mejorInd(aptitud)])
 sigpoblacion[0] = poblacion[mejorInd(aptitud)]
 sigaptitud[0] = aptitud[mejorInd(aptitud)]
-#print(sigpoblacion[0])
-#print(sigaptitud[0])
 
 gen = 1
 while(gen <= 100):
     poblacion = sigpoblacion
     aptitud = sigaptitud
     j = 1
-    #print("gen", gen)
     while(j < 100):
-        #print("j", j)
         p = random.randrange(2,6)
-        #print(p)
         valor = zeros(p)
         mejorApt = 100
         for i in range (0, p):
             valor[i] = random.randrange(0,100)
-                    #torneo.append(poblacion[valor[i]])
         for i in range (0,p):
             item = int(valor[i])
             if(CalAptitud(poblacion[item]) <= mejorApt): #Revisa si la aptitud del elemento i de la población es menor a la mejor aptitud actual
@@ -183,24 +152,21 @@ while(gen <= 100):
         padre1 = mejorApt #mejorApt es la posición en la lista población que contiene al padre
 
         p = random.randrange(2,6)
-                #torneo2 = []
         valor = zeros(p)
         mejorApt2 = 100
         for i in range (0, p):
             valor[i] = random.randrange(0,100)
-                    #torneo2[i] = poblacion[valor[i]]
         for i in range (0, p):
             item = int(valor[i])
             if(CalAptitud(poblacion[item]) <= mejorApt2):
                 mejorApt2 = valor[i]
         padre2 = mejorApt2 #mejorApt es la posición en la lista población que contiene al padre
-        #print("Padre 1:", poblacion[int(mejorApt)])
-        #print("Padre 2:", poblacion[int(mejorApt2)])
 
         padre1 = poblacion[int(mejorApt)]
         padre2 = poblacion[int(mejorApt2)]
         hijo1 = zeros(8)
         hijo2 = zeros(8)
+
         proba = random.randrange(1, 101)
         if(proba <= 90): #Si el número es menor a 90 se hará la cruza de un punto.
 
@@ -247,5 +213,5 @@ while(gen <= 100):
     gen = gen + 1
 
 MejorIndividuo = mejorInd(sigaptitud)
-print(imprimirMatriz(sigpoblacion[MejorIndividuo]))
+imprimirMatriz(sigpoblacion[MejorIndividuo])
 print(sigaptitud[MejorIndividuo])
