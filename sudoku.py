@@ -1,10 +1,14 @@
 from numpy import zeros
 import random
+import statistics
+import matplotlib.pyplot as plt
+import numpy
 
-poblacion = [] #En esta lista voy a guardar a toda mi población
-aptitud = [] #En esta lista voy a guardar los valores de aptitud
+poblacion = [] #In this list I am going to keep all of my population
+aptitud = [] #In this list I am going to store the values of aptitude
 sigpoblacion = []
 sigaptitud = []
+aptitudpromedio = []
 
 def imprimirMatriz(individuo):
     tablero = zeros((4,4))
@@ -26,7 +30,7 @@ def imprimirMatriz(individuo):
     tablero[3][3] = individuo[7]
     print(tablero)
 
-def CalAptitud(individuo): #Suma todos los elementos de la matriz que recibe para calcular su aptitud
+def CalAptitud(individuo): #Sums all the elements of the matrix it receives to calculate its suitability
     aptitud = 0
     aptitud1 = 0
     aptitud2 = 0
@@ -107,15 +111,15 @@ def CalAptitud(individuo): #Suma todos los elementos de la matriz que recibe par
     return aptitud
 
 def mejorInd(aptitud):
-    mejorApt = 100
+    mejorApt = 0
     indice = 0
     for i in range(0,100):
-        if(aptitud[int(i)] <= mejorApt):
+        if(aptitud[int(i)] >= mejorApt):
             mejorApt = aptitud[int(i)]
             indice = i
     return indice
 
-for i in range (0, 100): #Este for crea 100 individuos
+for i in range (0, 100): #This for creates 100 individuals
     tablero = zeros(8)
     tablero[0] = random.randrange(1,5)
     tablero[1] = random.randrange(1,5)
@@ -130,6 +134,8 @@ for i in range (0, 100): #Este for crea 100 individuos
 
 sigpoblacion = poblacion
 sigaptitud = aptitud
+
+aptitudpromedio.append(int(statistics.mean(aptitud)))
 
 sigpoblacion[0] = poblacion[mejorInd(aptitud)]
 sigaptitud[0] = aptitud[mejorInd(aptitud)]
@@ -147,9 +153,9 @@ while(gen <= 100):
             valor[i] = random.randrange(0,100)
         for i in range (0,p):
             item = int(valor[i])
-            if(CalAptitud(poblacion[item]) <= mejorApt): #Revisa si la aptitud del elemento i de la población es menor a la mejor aptitud actual
+            if(CalAptitud(poblacion[item]) <= mejorApt): #Checks if the fitness of element i of the population is lower than the current best fitness.
                 mejorApt = valor[i]
-        padre1 = mejorApt #mejorApt es la posición en la lista población que contiene al padre
+        padre1 = mejorApt #mejorApt is the position in the population list that contains the parent
 
         p = random.randrange(2,6)
         valor = zeros(p)
@@ -160,7 +166,7 @@ while(gen <= 100):
             item = int(valor[i])
             if(CalAptitud(poblacion[item]) <= mejorApt2):
                 mejorApt2 = valor[i]
-        padre2 = mejorApt2 #mejorApt es la posición en la lista población que contiene al padre
+        padre2 = mejorApt2 #mejorApt is the position in the population list that contains the parent
 
         padre1 = poblacion[int(mejorApt)]
         padre2 = poblacion[int(mejorApt2)]
@@ -168,7 +174,7 @@ while(gen <= 100):
         hijo2 = zeros(8)
 
         proba = random.randrange(1, 101)
-        if(proba <= 90): #Si el número es menor a 90 se hará la cruza de un punto.
+        if(proba <= 90): #If the number is less than 90, a crossing of a point will be made.
 
             hijo1[0] = padre1[0]
             hijo1[1] = padre1[1]
@@ -188,7 +194,7 @@ while(gen <= 100):
             hijo2[6] = padre1[6]
             hijo2[7] = padre1[7]
 
-        if(proba <= 10): #Mutación
+        if(proba <= 10): #Mutation
             aleatorio = random.randrange(0,8)
             if(hijo1[aleatorio] == 4):
                 hijo1[aleatorio] = 1
@@ -206,7 +212,8 @@ while(gen <= 100):
             sigaptitud[j+1] = CalAptitud(hijo2)
 
         j = j + 2
-    #identificar al mejor individuo
+    #identify the best individual
+    aptitudpromedio.append(int(numpy.mean(sigaptitud)))
     MejorIndividuo = mejorInd(sigaptitud)
     sigpoblacion[0] = sigpoblacion[MejorIndividuo]
     sigaptitud[0] = sigaptitud[MejorIndividuo]
@@ -215,3 +222,7 @@ while(gen <= 100):
 MejorIndividuo = mejorInd(sigaptitud)
 imprimirMatriz(sigpoblacion[MejorIndividuo])
 print(sigaptitud[MejorIndividuo])
+print(aptitudpromedio)
+
+plt.plot(aptitudpromedio)
+plt.show()
